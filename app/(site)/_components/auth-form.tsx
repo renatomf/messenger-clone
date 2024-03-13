@@ -1,6 +1,7 @@
 'use client';
 
 import axios from "axios";
+import { toast } from "react-hot-toast";
 import { signIn, useSession } from 'next-auth/react';
 import { useCallback, useEffect, useState } from 'react';
 import { BsGithub, BsGoogle } from 'react-icons/bs';
@@ -8,7 +9,6 @@ import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { useRouter } from "next/navigation";
 
 
-import { toast } from "react-hot-toast";
 import Input from "@/app/components/inputs/input";
 import Button from "@/app/components/button";
 import AuthSocialButton from "./auth-social-button";
@@ -23,7 +23,7 @@ const AuthForm = () => {
 
   useEffect(() => {
     if (session?.status === 'authenticated') {
-      router.push('/conversations')
+      router.push('/users')
     }
   }, [session?.status, router]);
 
@@ -64,7 +64,7 @@ const AuthForm = () => {
           }
 
           if (callback?.ok) {
-            router.push('/conversations')
+            router.push('/users')
           }
         })
         .catch(() => toast.error('Something went wrong!'))
@@ -82,7 +82,7 @@ const AuthForm = () => {
           }
 
           if (callback?.ok) {
-            router.push('/conversations')
+            router.push('/users')
           }
         })
         .finally(() => setIsLoading(false))
@@ -99,7 +99,7 @@ const AuthForm = () => {
         }
 
         if (callback?.ok) {
-          router.push('/conversations')
+          router.push('/users')
         }
       })
       .finally(() => setIsLoading(false));
