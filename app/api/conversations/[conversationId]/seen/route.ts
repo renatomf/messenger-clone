@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 
 import prismadb from "@/app/libs/prismadb";
 import getCurrentUser from "@/app/actions/get-current-user";
+import { pusherServer } from "@/app/libs/pusher";
 
 interface IParams {
   conversationId?: string;
@@ -67,10 +68,10 @@ export async function POST(
     });
 
     // Update all connections with new seen
-    // await pusherServer.trigger(currentUser.email, 'conversation:update', {
-    //   id: conversationId,
-    //   messages: [updatedMessage]
-    // });
+    await pusherServer.trigger(currentUser.email, 'conversation:update', {
+      id: conversationId,
+      messages: [updatedMessage]
+    });
 
     // If user has already seen the message, no need to go further
     if (lastMessage.seenIds.indexOf(currentUser.id) !== -1) {
@@ -78,7 +79,7 @@ export async function POST(
     }
 
     // Update last message seen
-    // await pusherServer.trigger(conversationId!, 'message:update', updatedMessage);
+    await pusherServer.trigger(conversationId!, 'message:update', updatedMessage);
 
     return new NextResponse('Success');
   } catch (error) {

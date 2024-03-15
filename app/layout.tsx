@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 
 import ToasterProvider from "./providers/toaster-provider";
 import AuthProvider from "./providers/auth-provider";
+import ActiveStatus from "./components/active-status";
 
 import "./globals.css";
 
@@ -23,6 +24,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <AuthProvider>
           <ToasterProvider />
+          <ActiveStatus />
           {children}
         </AuthProvider>
       </body>
